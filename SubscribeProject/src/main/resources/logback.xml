@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss} %c %M %L %thread %m%n"></property>
+    <!-- 配置文件的输出路径 -->
+    <property name="logDir" value="/var/log/myproxy"></property>
+
+    <!-- 配置控制台appender -->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.err</target>
+        <!--配置日志输出格式
+            手动配置格式的方式
+            直接引入上述的通用属性即可
+        -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!-- 格式引用通用属性配置 -->
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 配置文件的appender 普通文件-->
+    <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
+        <!-- 引入文件位置 -->
+        <file>${logDir}/logback.log</file>
+
+        <!-- 设置输出格式 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        日志记录器
+        配置root logger
+        level：配置日志级别
+        可以同时配置多个appender，做日志的多方向输出
+    -->
+    <root level="WARN">
+        <!-- 引入appender -->
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
+    </root>
+
+    <logger name="org.xqzp" level="INFO" additivity="false">
+        <!-- 在自定义logger中配置appender -->
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
+    </logger>
+</configuration>
+

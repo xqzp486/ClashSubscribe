@@ -1,0 +1,25 @@
+proxies:
+  - name: test
+    type: vmess
+    server: test.com
+    port: 8888
+    uuid: 9d381954-bd92-4a64-b11b-566ba0f41ec5
+    alterId: 0
+    cipher: auto
+    udp: true
+    tls: true
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /testPath
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+      - test
+
+rules:
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,PROXY
